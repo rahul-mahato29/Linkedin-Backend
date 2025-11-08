@@ -1,15 +1,16 @@
 package com.linkedin.postService.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Data
-@Table(name = "post")
-public class Post {
+@Getter
+@Setter
+@Table(name = "post_likes")
+public class PostLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +20,7 @@ public class Post {
     private Long userId;
 
     @Column(nullable = false)
-    private String content;
+    private Long postId;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
