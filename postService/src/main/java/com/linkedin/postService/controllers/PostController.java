@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/posts")
@@ -23,5 +20,11 @@ public class PostController {
     public ResponseEntity<PostDTO> createPost(@RequestBody PostCreateRequestDTO postDTO, HttpServletResponse httpServletResponse) {
         PostDTO createdPost = postService.createPost(postDTO, 1L);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostDTO> getPost(@PathVariable Long postId) {
+        PostDTO post = postService.getPost(postId);
+        return ResponseEntity.ok(post);
     }
 }

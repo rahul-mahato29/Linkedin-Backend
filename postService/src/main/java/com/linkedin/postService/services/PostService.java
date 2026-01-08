@@ -5,4 +5,6 @@ import com.linkedin.postService.dto.PostDTO;
 
 public interface PostService {
     PostDTO createPost(PostCreateRequestDTO postDTO, Long userId);
+
+    PostDTO getPost(Long postId);
 }
