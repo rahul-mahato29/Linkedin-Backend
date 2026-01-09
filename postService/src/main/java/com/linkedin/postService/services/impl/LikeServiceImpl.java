@@ -6,6 +6,7 @@ import com.linkedin.postService.exceptions.ResourceNotFoundException;
 import com.linkedin.postService.repositories.PostLikeRepository;
 import com.linkedin.postService.repositories.PostRepository;
 import com.linkedin.postService.services.LikeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,18 @@ public class LikeServiceImpl implements LikeService {
         postLike.setPostId(postId);
         postLike.setUserId(userId);
         postLikeRepository.save(postLike);
+    }
+
+    @Transactional
+    @Override
+    public void unLikePost(Long postId, long userId) {
+        log.info("Unlike post with id : {}", postId);
+        boolean postExists = postRepository.existsById(postId);
+        if(!postExists) throw new ResourceNotFoundException("Post Not Found With Id : "+postId);
+
+        boolean alreadyLiked = postLikeRepository.existsByUserIdAndPostId(postId, userId);
+        if(!alreadyLiked) throw new BadRequestException("Cannot unlike the post, which is not liked");
+
+        postLikeRepository.deleteByUserIdAndPostId(userId, postId);
     }
 }
